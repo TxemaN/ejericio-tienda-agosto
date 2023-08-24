@@ -64,9 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             llenarVacia();
         }
-        if (target.classList.contains("btnQT")) {
-            borrarTodo();
-        }
+        
     });
     //PINTAR SUGERENCIAS EN LA PARTE SUPERIOR DE LA PÁGINA
 

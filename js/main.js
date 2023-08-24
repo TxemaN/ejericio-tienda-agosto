@@ -1,18 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
+     /** Estas son las varables para identificar los elementos del HTML por su ID. */
     const productosSugeridos = document.querySelector("#productosSugeridos");
     const elegirProductos = document.querySelector("#elegirProductos");
     const espacioProductos = document.querySelector("#espacioProductos");
     const carritoVacio = document.querySelector("#carritoVacio");
     const precioTotal = document.querySelector("#precioTotal");
     const botonPagar = document.querySelector("#botonPagar")
+    const botonVaciar=document.querySelector("#botonVaciar")
     let sumaPrecios = 0;
+    /** La URL a la que haremos la consulta */
     const urlBase = "https://dummyjson.com/products";
 
+    /** Esta variable es imprescindible para crear el fragmento que luego se incrustrará en el HTML. */
     const fragment = document.createDocumentFragment();
 
+    /** Estas son las variables para local storage, la primera es para productos, la segunda para la suma total de la compra */
     let noPerderLocal = JSON.parse(localStorage.getItem("compradosArray")) || [];
     let precioFinal = JSON.parse(localStorage.getItem("sumaPrecios")) || [];
 
+
+    /** Evento para activar el despliegue de los productos por categoría una vez cambia el value del droplist */
     elegirProductos.addEventListener('change', (ev) => {
         ev.preventDefault()
         let elegido = elegirProductos.value;
@@ -22,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     })
-
+/** Función del botón para pasar a la página con el carrito con el precio sumado*/
     botonPagar.addEventListener('click', (ev) => {
         ev.preventDefault()
        actualizarPrecio()
@@ -31,8 +38,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     })
     //BOTONES AÑADIR Y QUITAR
-    document.addEventListener("click", ({ target }) => {
 
+    botonVaciar.addEventListener('click', (ev) => {
+        ev.preventDefault()
+
+        window.location.href = "index.html";
+
+        borrarTodo()
+    })
+    document.addEventListener("click", ({ target }) => {
+/** Añade producto desde el botón pie de foto */
         if (target.classList.contains("anyadir")) {
             const valorIdObjeto = target.value;
             const valorPrecioObjeto = target.value2;
@@ -45,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
             llenarVacia();
 
         }
+        /** Añade producto desde el botón con símbolo "+". Pasa la id, el precio subtotal y el nombre */
         if (target.classList.contains("btnSumar")) {
             const valorIdObjeto = target.value;
             const valorPrecioObjeto = target.value2;
@@ -55,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             llenarVacia();
 
         }
+        /** Quita producto desde el botón con símbolo "-". Pasa la id, el precio subtotal, el precio individual  */
         if (target.classList.contains("btnQuitar")) {
 
             const valorIdObjeto = target.value;
@@ -65,13 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             llenarVacia();
         }
-        if (target.classList.contains("btnQT")) {
-            borrarTodo();
-        }
+       
         
     });
     //PINTAR SUGERENCIAS EN LA PARTE SUPERIOR DE LA PÁGINA
-
+/** Añade cuatro sugerencias a la págna principal, éstas también incluyen el botón de añadir al carrito */
     const pintarSugerencias = async () => {
 
         const sugerencias = [66, 67, 68, 69]
@@ -130,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    //PINTAR LA LISTA DE OPCIONES 
+    /** Esta es la función que trae todas las categorías de la API al droplist*/
     const pintarCategorias = async () => {
         try {
             const res = await fetch(`${urlBase}/categories`);
@@ -154,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
-    //RECOGER PRODUCTOS UNA VEZ SE HA ELEGIDO LA CATEGORÍA
+    /** Consulta que recibe la URL desde pintarProducto */
     const consulta = async (url) => {
 
         try {
@@ -190,6 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /** Recoge la urlBase y la del droplist para enviarla a consulta, después muestra los productos con sus descipciones y el botón añadir */
     const pintarProductos = async (url) => {
 
         const { ok, datos } = await consulta(url)
@@ -257,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
     }
-    //AÑADIR AL CARRITO
+   /** Añade producto desde el botón "añadir" de cada uno de los productos. Pasa la id, el precio, el nombre, la cantidad y la url de la imagen */
 
     const subirArrayLocal = (valorIdObjeto, valorPrecioObjeto, valorNombreObjeto, valorImagenObjeto) => {
 
@@ -294,7 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
        
 
     }
-    //AÑADIR PRODUCTO DESDE BOTON MAS
+    /** Añade producto desde el botón con símbolo "+". modifica la cantidad en el carrto y la suma total del valor de las compras */
     const subirUnoArrayLocal = (valorIdObjeto, valorPrecioObjeto, valorPrecioObjetoInicial) => {
         const coincidencia = noPerderLocal.find((elemento) => elemento.producto == valorIdObjeto)
 
@@ -315,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    //QUITAR PRODUCTO
+        /** Elimina un producto desde el botón con símbolo "-". modifica la cantidad en el carrto y la suma total del valor de las compras */
 
     const quitarArrayLocal = (valorIdObjeto, valorPrecioObjeto, valorPrecioObjetoInicial) => {
         const coincidencia = noPerderLocal.find((elemento) => elemento.producto == valorIdObjeto)
@@ -339,24 +355,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    //ACTUALIZAR PRECIO
+       /** Actualiza el localStorage para el precio total de la compra */
 
     const actualizarPrecio=() => {
 
         precioFinal=sumaPrecios.toFixed(2)
         localStorage.setItem("sumaPrecios", JSON.stringify(parseFloat(precioFinal)));
         if(precioFinal>0){
-            botonPagar.classList.remove("ocultable")
+            botonPagar.classList.remove("ocultable");
+            botonVaciar.classList.remove("ocultable")
 
 
         }
          if( precioFinal<1){
 
             botonPagar.classList.add("ocultable")
+            botonVaciar.classList.add("ocultable")
         }
 
     }
-    //LLENAR EL CARRITO
+        /** Representa en el HTML todas las variables que se han modificado en localStorage */
 
     const llenarVacia = () => {
 
