@@ -15,19 +15,14 @@
     <p>LA TIENDA DEL BARRIO FUERA DEL BARRIO</p>
 </header>
 <body>
-    
+    <header>
+
+    </header>
 
     <main>
-        <h2 class="cabeceraSugerencia">LO MEJOR VALORADO</h2>
-        <section id="productosSugeridos" class="cajaSugerencias">
-            
-
-
-
-        </section>
-
+        
        
-        <form action="" class="">
+        <form action="" class="desaparece">
 
            <label for="productos">ELIGE TU CATEGORIA</label>  <select name="productos" id="elegirProductos" class="">
                 <option value="">Elige la categoria</option>
@@ -38,7 +33,7 @@
             
         </form>
 
-        <section class="carrito">
+        <section class="carritoPagar">
             <table>
                 <h2>TU CARRITO <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                 </h2>
@@ -49,6 +44,8 @@
                         <th>Cantidad</th>
                         <th>Precio unidad</th>
                         <th>Precio</th>
+                        <th></th>
+                        
                        
                     </tr>
                     
@@ -62,9 +59,7 @@
                     </td>
                     <td id="precioTotal"></td>
                     <td><button id="botonPagar" class="ocultable">PAGAR</button></td>
-                    <td><button id="botonVaciar" class="ocultable">VACÍAR CARRITO</button></td>
                 </tr>
-                
                </table>
             
         </section>
@@ -82,7 +77,7 @@
         <a href="https://dummyjson.com/">THANKS DUMMYJSON FOR THE BACKEND!!!</a>
 
     </footer>
-    <script src="js/main.js"></script>
+    <script src="js/carrito.js"></script>
 </body>
 
 </html>
