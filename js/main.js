@@ -1,12 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-     /** Estas son las varables para identificar los elementos del HTML por su ID. */
+    /** Estas son las varables para identificar los elementos del HTML por su ID. */
     const productosSugeridos = document.querySelector("#productosSugeridos");
     const elegirProductos = document.querySelector("#elegirProductos");
     const espacioProductos = document.querySelector("#espacioProductos");
     const carritoVacio = document.querySelector("#carritoVacio");
     const precioTotal = document.querySelector("#precioTotal");
-    const botonPagar = document.querySelector("#botonPagar")
-    const botonVaciar=document.querySelector("#botonVaciar")
+
     let sumaPrecios = 0;
     /** La URL a la que haremos la consulta */
     const urlBase = "https://dummyjson.com/products";
@@ -21,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /** Evento para activar el despliegue de los productos por categoría una vez cambia el value del droplist */
     elegirProductos.addEventListener('change', (ev) => {
-        ev.preventDefault()
+
         let elegido = elegirProductos.value;
         let url = `${urlBase}/category/${elegido}`
         consulta(url);
@@ -29,25 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     })
-/** Función del botón para pasar a la página con el carrito con el precio sumado*/
-    botonPagar.addEventListener('click', (ev) => {
-        ev.preventDefault()
-       actualizarPrecio()
-        window.location.href = "pagar.html";
+    /** Función del botón para pasar a la página con el carrito con el precio sumado*/
 
-
-    })
     //BOTONES AÑADIR Y QUITAR
 
-    botonVaciar.addEventListener('click', (ev) => {
-        ev.preventDefault()
 
-        window.location.href = "index.html";
 
-        borrarTodo()
-    })
     document.addEventListener("click", ({ target }) => {
-/** Añade producto desde el botón pie de foto */
+        /** Añade producto desde el botón pie de foto */
         if (target.classList.contains("anyadir")) {
             const valorIdObjeto = target.value;
             const valorPrecioObjeto = target.value2;
@@ -82,11 +70,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
             llenarVacia();
         }
-       
-        
+        if (target.classList.contains("ocultablePagar")) {
+
+            actualizarPrecio()
+            sumaPrecios = precioFinal;
+            window.location.href = "pagar.html";
+
+        }
+        if (target.classList.contains("ocultablePagarTodo")) {
+
+
+
+            window.location.href = "index.html";
+
+            borrarTodo()
+
+        }
+        if (target.classList.contains("ocultableVaciar")) {
+
+
+
+            window.location.href = "index.html";
+
+            borrarTodo()
+
+        }
+
     });
     //PINTAR SUGERENCIAS EN LA PARTE SUPERIOR DE LA PÁGINA
-/** Añade cuatro sugerencias a la págna principal, éstas también incluyen el botón de añadir al carrito */
+    /** Añade cuatro sugerencias a la págna principal, éstas también incluyen el botón de añadir al carrito */
     const pintarSugerencias = async () => {
 
         const sugerencias = [66, 67, 68, 69]
@@ -95,8 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (res.ok) {
                 const sugerencia = await res.json();
 
-
-                const cajaFoto = document.createElement('FIGURE');
+                const cajaSugerencia = document.createElement("DIV")
+                const cajaFoto = document.createElement('DIV');
                 const foto = document.createElement('IMG');
                 foto.classList.add("fotoSugerida")
                 const descripcion = document.createElement("P")
@@ -126,14 +138,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 foto.src = sugerencia.images[0];
                 foto.id = sugerencia.title;
-                cajaFoto.append(foto);
-                cajaFoto.append(descripcion);
-                cajaFoto.append(calificacion);
-                cajaFoto.append(precio);
-                cajaFoto.append(descuento);
-                cajaFoto.append(precioDescontado);
-                cajaFoto.append(botonAnyadir)
-                fragment.append(cajaFoto);
+                cajaFoto.append(foto)
+                cajaSugerencia.append(cajaFoto, descripcion, calificacion, precio, descuento, precioDescontado, botonAnyadir);
+
+                fragment.append(cajaSugerencia);
 
 
 
@@ -151,8 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch(`${urlBase}/categories`);
             if (res.ok) {
                 const categorias = await res.json();
-
-
                 categorias.forEach((element) => {
                     const opciones = document.createElement('OPTION');
                     opciones.value = element;
@@ -227,6 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 foto.src = images[0];
                 foto.alt = title;
 
+                const espacioDatos = document.createElement("DIV")
                 const descripcion = document.createElement("P")
                 descripcion.textContent = "DECRIPCIÓN PRODUCTO:" + description;
 
@@ -253,34 +260,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 botonAnyadir.textContent = "AÑADIR AL CARRITO";
                 console.log(botonAnyadir.value)
 
-                fragment.append(nombreProducto);
+                //CAMBIAR EL FIGURE EN HTML POR UN ARTICLE Y LLEVAR ESTOS ELEMENTOS AHÍ Y LUEGO EL ARTICLE AL FRAGMENT//
+
                 espacioFoto.append(foto);
-                fragment.append(espacioFoto);
-                fragment.append(descripcion);
-                fragment.append(calificacion);
-                fragment.append(precio);
-                fragment.append(descuento);
-                fragment.append(precioDescontado);
-                fragment.append(botonAnyadir)
-                espacioProductos.append(fragment);
+                espacioDatos.append(nombreProducto, espacioFoto, descripcion, calificacion, precio, descuento, precioDescontado, botonAnyadir);
+                fragment.append(espacioDatos)
+
+
 
 
             });
 
+            espacioProductos.append(fragment);
             console.log(datos);
         } else {
             console.log(datos)
         }
 
     }
-   /** Añade producto desde el botón "añadir" de cada uno de los productos. Pasa la id, el precio, el nombre, la cantidad y la url de la imagen */
+    /** Añade producto desde el botón "añadir" de cada uno de los productos. Pasa la id, el precio, el nombre, la cantidad y la url de la imagen */
 
     const subirArrayLocal = (valorIdObjeto, valorPrecioObjeto, valorNombreObjeto, valorImagenObjeto) => {
 
         const coincidencia = noPerderLocal.find((elemento) => elemento.producto == valorIdObjeto)
 
         if (!coincidencia) {
-            noPerderLocal.push({
+            const objProducto = {
                 nombreProducto: valorNombreObjeto,
                 producto: valorIdObjeto,
                 precioProducto: valorPrecioObjeto,
@@ -288,12 +293,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 urlImagen: valorImagenObjeto,
                 cantidad: 1,
 
-            })
+            }
+
+            noPerderLocal.push(objProducto)
             sumaPrecios += valorPrecioObjeto
-            
+
             console.log("PRECIOS" + sumaPrecios)
             localStorage.setItem("compradosArray", JSON.stringify(noPerderLocal));
-            
+
         }
         else {
             coincidencia.nombreProducto = valorNombreObjeto;
@@ -307,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("PRECIOS" + sumaPrecios)
         }
 
-       
+
 
     }
     /** Añade producto desde el botón con símbolo "+". modifica la cantidad en el carrto y la suma total del valor de las compras */
@@ -323,6 +330,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         else {
+
+            /* 
+            const arrayProductos=noPerderLocal.filter((elemento) => elemento.ID != valorIdObjeto)
+            */
             const posicionElemento = noPerderLocal.findIndex((elemento) => elemento.producto == valorIdObjeto)
             if (posicionElemento !== -1) {
                 noPerderLocal.splice(posicionElemento, 1)
@@ -331,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-        /** Elimina un producto desde el botón con símbolo "-". modifica la cantidad en el carrto y la suma total del valor de las compras */
+    /** Elimina un producto desde el botón con símbolo "-". modifica la cantidad en el carrto y la suma total del valor de las compras */
 
     const quitarArrayLocal = (valorIdObjeto, valorPrecioObjeto, valorPrecioObjetoInicial) => {
         const coincidencia = noPerderLocal.find((elemento) => elemento.producto == valorIdObjeto)
@@ -355,26 +366,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-       /** Actualiza el localStorage para el precio total de la compra */
+    /** Actualiza el localStorage para el precio total de la compra */
 
-    const actualizarPrecio=() => {
+    const actualizarPrecio = () => {
 
-        precioFinal=sumaPrecios.toFixed(2)
+        precioFinal = sumaPrecios.toFixed(2)
         localStorage.setItem("sumaPrecios", JSON.stringify(parseFloat(precioFinal)));
-        if(precioFinal>0){
+        if (precioFinal > 0) {
             botonPagar.classList.remove("ocultable");
-            botonVaciar.classList.remove("ocultable")
+            botonVaciar.classList.remove("ocultable");
+            botonPagarTotal.classList.remove("ocultable");
 
 
         }
-         if( precioFinal<1){
-
+        if (precioFinal < 1) {
+            precioFinal = 0;
             botonPagar.classList.add("ocultable")
             botonVaciar.classList.add("ocultable")
+            botonPagarTotal.classList.add("ocultable");
         }
 
     }
-        /** Representa en el HTML todas las variables que se han modificado en localStorage */
+    /** Representa en el HTML todas las variables que se han modificado en localStorage */
 
     const llenarVacia = () => {
 
@@ -409,7 +422,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const precioIndividual = document.createElement("TD");
             precioIndividual.classList.add("numeros");
-        
+            precioIndividual.textContent = item.precioProductoInicial.toFixed(2)
+
 
             const precioProducto = document.createElement("TD");
             precioProducto.classList.add("numeros");
@@ -439,7 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
             imagenProducto.append(espacioFoto)
             fragment.append(nuevoArticulo, nombreProducto, imagenProducto, cantidadProducto, precioIndividual, precioProducto, botones);
             carritoVacio.append(fragment)
-            
+
         })
 
 
@@ -452,10 +466,24 @@ document.addEventListener('DOMContentLoaded', () => {
         noPerderLocal = [];
         llenarVacia();
     }
-    
-    pintarSugerencias()
-    pintarCategorias()
-    llenarVacia()
-    console.log(precioFinal)
-    
+    const init = () => {
+        const ruta = location.pathname
+
+        console.log(ruta.includes("index"))
+        if (ruta.includes("index")) {
+            console.log("contiene index")
+            console.log(ruta)
+            pintarSugerencias()
+            pintarCategorias()
+            llenarVacia()
+            console.log(precioFinal)
+        } else if (ruta.includes("pagar")) {
+            sumaPrecios = precioFinal
+            llenarVacia()
+
+        }
+
+    }
+
+    init()
 })//LOAD
