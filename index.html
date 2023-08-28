@@ -7,35 +7,31 @@
     <title>Ejercicio tienda Agosto</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Rubik+Iso&family=Space+Mono&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Rubik+Iso&family=Space+Mono&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/mystyle.css">
 </head>
-<header>
-    <p>LA TIENDA DEL BARRIO FUERA DEL BARRIO</p>
-</header>
+
 <body>
-    
+    <header>
+        <p>LA TIENDA DEL BARRIO FUERA DEL BARRIO</p>
+    </header>
 
     <main>
         <h2 class="cabeceraSugerencia">LO MEJOR VALORADO</h2>
-        <section id="productosSugeridos" class="cajaSugerencias">
-            
+        <section id="productosSugeridos" class="cajaSugerencias"> </section>
 
 
-
-        </section>
-
-       
         <form action="" class="">
 
-           <label for="productos">ELIGE TU CATEGORIA</label>  <select name="productos" id="elegirProductos" class="">
+            <label for="productos">ELIGE TU CATEGORIA</label> <select name="productos" id="elegirProductos" class="">
                 <option value="">Elige la categoria</option>
-                
+
 
 
             </select>
-            
+
         </form>
 
         <section class="carrito">
@@ -49,9 +45,9 @@
                         <th>Cantidad</th>
                         <th>Precio unidad</th>
                         <th>Precio</th>
-                       
+
                     </tr>
-                    
+
                 </thead>
                 <tbody id="carritoVacio">
 
@@ -61,21 +57,22 @@
                         TOTAL A PAGAR
                     </td>
                     <td id="precioTotal"></td>
-                    <td><button id="botonPagar" class="ocultable">PAGAR</button></td>
-                    <td><button id="botonVaciar" class="ocultable">VACÍAR CARRITO</button></td>
+                    <td><button id="botonPagar" class="ocultablePagar">PAGAR</button></td>
+                    <td><button id="botonVaciar" class="ocultableVaciar">VACÍAR CARRITO</button></td>
+                    <p id="botonPagarTotal"></p>
                 </tr>
-                
-               </table>
-            
-        </section>
-    
-        <section id="espacioProductos" >
 
-
+            </table>
 
         </section>
 
-        
+        <section id="espacioProductos">
+
+
+
+        </section>
+
+
     </main>
     <footer id="piePagina">
 
