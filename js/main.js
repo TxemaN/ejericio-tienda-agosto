@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 foto.src = images[0];
                 foto.alt = title;
 
-                const espacioDatos = document.createElement("DIV")
+                const espacioDatos = document.createElement("ARTICLE")
                 const descripcion = document.createElement("P")
                 descripcion.textContent = "DECRIPCIÓN PRODUCTO:" + description;
 

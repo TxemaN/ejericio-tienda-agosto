@@ -1,6 +1,5 @@
 * {
     border: none;
-    cursor: pointer;
     margin: 0;
 }
 
@@ -13,6 +12,7 @@ img {
 p {
     background-color: wheat;
 }
+
 
 header {
     background-color: #cc5577;
@@ -154,6 +154,7 @@ table {
     width: 90%;
     background-color: wheat;
     margin-left: 5%;
+    
 }
 
 /* =============== 768 =============== */
